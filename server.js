@@ -23,6 +23,7 @@ client.on('error', err => {throw err;});
 app.get('/location', getLocation);
 app.get('/weather', weatherHandler);
 app.get('/trails', getTrails);
+app.get('/movies', getMovies);
 
 
 app.get('*', (request, response) => {
@@ -100,6 +101,24 @@ function getTrails(request, response) {
     });
 }
 
+// Movie Handler
+
+function getMovies(request, response) {
+  const url = `https://api.themoviedb.org/3/search/movie/?api_key=${process.env.MOVIE_API_KEY}&query=${request.query.data}`;
+  // console.log('lat/long', request.query.data.latitude);
+  superagent.get(url)
+    .then(data => {
+      const movieSummeries = data.body.results.map(element => {
+        return new Movies(element);
+      });
+      response.status(200).send(movieSummeries);
+    })
+    .catch(() => {
+      errorHandler('Something went wrong', request, response);
+    });
+}
+
+
 
 // error handler
 function errorHandler(error, request, response) {
@@ -133,6 +152,19 @@ function Trails(trail){
   this.condition_date = trail.conditionDate.slice(0, 10);
   this.condition_time = trail.conditionDate.slice(11);
 }
+
+// Movie constructor
+function Movies(movie){
+  this.title = movie.title;
+  this.overview = movie.overview;
+  this.average_vote = movie.vote_average;
+  this.total_votes = movie.vote_count;
+  this.image_url = movie.poster_path;
+  this.popularity = movie.popularity;
+  this.released_on = movie.release_date;
+
+}
+
 // Connect to DB and Start the Web Server
 client.connect()
   .then( () => {
