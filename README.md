@@ -2,7 +2,7 @@
 Node, npm and Express
 # Project Name
 
-**Author**: Roman Sydoruk, Ehsan Ghafari
+**Author**: Ehsan Ghafari, James Ruhashyankiko
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
