@@ -17,6 +17,7 @@ app.use(cors());
 // Database Connection Setup
 const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', err => {throw err;});
+client.connect();
 
 
 //API routes
@@ -166,12 +167,15 @@ function Movies(movie){
 }
 
 // Connect to DB and Start the Web Server
-client.connect()
-  .then( () => {
-    app.listen(PORT, () => {
-      console.log('Server up on', PORT);
-    });
-  })
-  .catch(err => {
-    throw `PG Startup Error: ${err.message}`;
-  });
+app.listen(PORT, () => {
+  console.log('Server up on', PORT)});
+
+// client.connect()
+//   .then( () => {
+//     app.listen(PORT, () => {
+//       console.log('Server up on', PORT);
+//     });
+//   })
+//   .catch(err => {
+//     throw `PG Startup Error: ${err.message}`;
+//   });
